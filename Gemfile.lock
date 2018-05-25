@@ -1,0 +1,15 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    json (2.1.0)
+    jwt (2.1.0)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  json
+  jwt
+
+BUNDLED WITH
+   1.16.1
