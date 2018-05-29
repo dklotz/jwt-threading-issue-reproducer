@@ -12,7 +12,7 @@ payload = { data: 'test' }
 seed = 'abcdefghijklmnopqrstuvwxyzABCDEF'
 private_key = RbNaCl::Signatures::Ed25519::SigningKey.new(seed)
 public_key = private_key.verify_key
-puts "Private Key: #{private_key.to_jwk}"
+puts "Private Key: #{private_key}"
 
 token = JWT.encode payload, private_key, 'ED25519'
 
