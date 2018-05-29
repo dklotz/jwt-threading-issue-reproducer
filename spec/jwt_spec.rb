@@ -1,25 +1,32 @@
 # frozen_string_literal: true
 
 require 'rspec'
-require 'rbnacl/libsodium'
-require 'json'
 require 'jwt'
 
-RSpec.describe 'foo' do
-  context 'with HMAC' do
-    let(:secret) { 'my$ecretK3y' }
-    let(:token) { JWT.encode payload, secret, 'HS256' }
-    let(:payload) { { 'data' => 'test' } }
+RSpec.describe 'JWT' do
+  it 'can be used from different threads' do
+    results = []
+    mutex = Mutex.new
 
-    it 'creates a JWT string' do
-      expect(token).to be_a(String)
-      expect(token).to start_with('ey')
+    threads = []
+    8.times do
+      threads << Thread.new do
+        secret = "secret#{Thread.current.object_id}"
+        payload = { 'data' => Thread.current.object_id }
+        token = JWT.encode payload, secret, 'HS256'
+        decoded, = JWT.decode token, secret, true, algorithm: 'HS256' do
+          # Comment the following line (or switch back to jwt 2.1.0) to
+          # make the spec pass:
+          sleep(0.001)
+          secret
+        end
+        mutex.synchronize { results << decoded['data'] }
+      end
     end
 
-    it 'can do a simple roundtrip' do
-      decoded_payload, header = JWT.decode token, secret, true, algorithm: 'HS256'
-      expect(header['alg']).to eq('HS256')
-      expect(decoded_payload).to eq(payload)
-    end
+    threads.each(&:join)
+    thread_ids = threads.map(&:object_id)
+
+    expect(results).to match_array(thread_ids)
   end
 end

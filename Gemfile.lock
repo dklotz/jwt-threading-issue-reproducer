@@ -1,14 +1,13 @@
+GIT
+  remote: https://github.com/jwt/ruby-jwt.git
+  revision: eef38b2fbe182fec8882519eece94e7da94fb478
+  specs:
+    jwt (2.1.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
     diff-lcs (1.3)
-    ffi (1.9.23)
-    json (2.1.0)
-    jwt (2.1.0)
-    rbnacl (5.0.0)
-      ffi
-    rbnacl-libsodium (1.0.16)
-      rbnacl (>= 3.0.1)
     rspec (3.7.0)
       rspec-core (~> 3.7.0)
       rspec-expectations (~> 3.7.0)
@@ -27,9 +26,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  json
-  jwt
-  rbnacl-libsodium
+  jwt!
   rspec
 
 BUNDLED WITH
